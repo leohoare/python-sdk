@@ -530,8 +530,13 @@ def test_client_should_merge_contexts():
 
     # Retrieve the call arguments
     args, kwargs = provider.resolve_boolean_details.call_args
-    flag_key, default_value, context = args
-
+    flag_key, default_value, context = (
+        kwargs["flag_key"],
+        kwargs["default_value"],
+        kwargs["evaluation_context"],
+    )
+    assert flag_key == "flag"
+    assert default_value is False
     assert context.targeting_key == "invocation"  # Last one in the merge chain
     assert context.attributes["global_attr"] == "global_value"
     assert context.attributes["transaction_attr"] == "transaction_value"
